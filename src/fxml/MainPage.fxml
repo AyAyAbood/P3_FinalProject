@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import de.jensd.fx.glyphs.weathericons.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="606.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainPageController">
+   <children>
+      <VBox prefHeight="494.0" prefWidth="276.0" style="-fx-background-color: #3F2B63;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="126.0" prefWidth="276.0">
+               <children>
+                  <Label layoutX="47.0" layoutY="46.0" prefHeight="35.0" prefWidth="215.0" text="Library Management" textFill="WHITE">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIcon fill="WHITE" glyphName="PENCIL" layoutX="14.0" layoutY="74.0" size="30px" />
+               </children>
+            </Pane>
+            <Button fx:id="booksButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="54.0" prefWidth="286.0" stylesheets="@../CSS/styles.css" text="Books" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="23px" />
+               </graphic>
+            </Button>
+            <Button fx:id="borrowersButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="54.0" prefWidth="286.0" stylesheets="@../CSS/styles.css" text="Borrowers" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="GROUP" size="23px" />
+               </graphic>
+            </Button>
+            <Button fx:id="ordersButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="54.0" prefWidth="286.0" stylesheets="@../CSS/styles.css" text="Orders" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <WeatherIcon fill="WHITE" glyphName="WINDY" size="23px" />
+               </graphic>
+            </Button>
+            <Button fx:id="closeButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="54.0" prefWidth="286.0" stylesheets="@../CSS/styles.css" text="Close" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" size="23px" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <StackPane layoutX="276.0">
+         <children>
+            <Pane fx:id="OrdersPane" layoutX="286.0" layoutY="10.0" prefHeight="608.0" prefWidth="720.0">
+               <children>
+                  <FontAwesomeIcon fx:id="ExitButton1" fill="#4d4a4a" glyphName="CLOSE" layoutX="697.0" layoutY="22.0" onMouseClicked="#ExitButtonHandler" size="23px" />
+                  <Pane layoutY="78.0" prefHeight="126.0" prefWidth="720.0" style="-fx-background-color: #2b633f;">
+                     <children>
+                        <Label layoutX="49.0" layoutY="37.0" prefHeight="55.0" prefWidth="209.0" text="Orders" textFill="WHITE">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <GridPane layoutX="4.0" layoutY="226.0" prefHeight="382.0" prefWidth="712.0">
+                     <children>
+                        <TableView fx:id="ordersTableView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../CSS/stylesOrders.css" GridPane.rowIndex="1">
+                           <columns>
+                              <TableColumn fx:id="ordersTcOrderId" prefWidth="75.0" text="order ID" />
+                              <TableColumn fx:id="ordersTcBookId" prefWidth="62.0" text="book ID" />
+                              <TableColumn fx:id="ordersTcBorrowerId" prefWidth="119.0" text="borrower ID" />
+                              <TableColumn fx:id="ordersTcBorrowingDate" prefWidth="45.0" text="borrowing date " />
+                              <TableColumn fx:id="ordersTcReturnDate" prefWidth="122.0" text="return date" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="ClearOrderButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesOrders.css" text="Clear Orders" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="ERASER" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="SearchOrderButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesOrders.css" text="Search Order" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="DeleteOrderButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesOrders.css" text="Delete Order" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="UpdateOrderButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesOrders.css" text="Update Order" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="AddOrderButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesOrders.css" text="Add Order" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="20px" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="338.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </Pane>
+            <Pane fx:id="BorrowersPane" layoutX="296.0" layoutY="20.0" prefHeight="608.0" prefWidth="720.0">
+               <children>
+                  <FontAwesomeIcon fx:id="ExitButton2" fill="#4d4a4a" glyphName="CLOSE" layoutX="697.0" layoutY="22.0" onMouseClicked="#ExitButtonHandler" size="23px" />
+                  <Pane layoutY="78.0" prefHeight="126.0" prefWidth="720.0" style="-fx-background-color: #a63c6b;">
+                     <children>
+                        <Label layoutX="49.0" layoutY="37.0" prefHeight="55.0" prefWidth="193.0" text="Borrowers" textFill="WHITE">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <GridPane layoutX="4.0" layoutY="226.0" prefHeight="382.0" prefWidth="712.0">
+                     <children>
+                        <TableView fx:id="borrowerTableView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../CSS/stylesBorrowers.css" GridPane.rowIndex="1">
+                           <columns>
+                              <TableColumn fx:id="borrowerTcId" prefWidth="30.0" text="ID" />
+                              <TableColumn fx:id="borrowersTcFirstName" prefWidth="75.0" text="first name" />
+                              <TableColumn fx:id="borrowersTcLastName" prefWidth="86.0" text="last name" />
+                              <TableColumn fx:id="borrowersTcPhone" prefWidth="139.0" text="phone" />
+                              <TableColumn fx:id="borrowersTcAge" prefWidth="37.0" text="age" />
+                              <TableColumn fx:id="borrowersTcEmail" prefWidth="172.0" text="email" />
+                              <TableColumn fx:id="borrowersTcAddress" prefWidth="119.0" text="address" />
+                              <TableColumn fx:id="borrowersTcGender" minWidth="0.0" prefWidth="51.0" text="gender" />
+                           </columns>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="ClearBorrowerButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesBorrowers.css" text="Clear Borrowers" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="ERASER" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="SearchBorrowerButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesBorrowers.css" text="Search Borrower" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="DeleteBorrowerButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesBorrowers.css" text="Delete Borrower" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="UpdateBorrowerButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesBorrowers.css" text="Update Borrower" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="AddBorrowerButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/stylesBorrowers.css" text="Add Borrower" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="20px" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="338.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </Pane>
+            <Pane fx:id="BooksPane" layoutX="276.0" prefHeight="608.0" prefWidth="720.0">
+               <children>
+                  <FontAwesomeIcon fx:id="ExitButton" fill="#4d4a4a" glyphName="CLOSE" layoutX="697.0" layoutY="22.0" onMouseClicked="#ExitButtonHandler" size="23px" />
+                  <Pane layoutY="78.0" prefHeight="126.0" prefWidth="720.0" style="-fx-background-color: #7156DD;">
+                     <children>
+                        <Label layoutX="49.0" layoutY="37.0" prefHeight="44.0" prefWidth="137.0" text="Books" textFill="WHITE">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <GridPane layoutX="4.0" layoutY="226.0" prefHeight="382.0" prefWidth="712.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="338.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TableView fx:id="booksTableView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../CSS/styles.css" GridPane.rowIndex="1">
+                          <columns>
+                            <TableColumn fx:id="booksTcId" prefWidth="37.0" text="ID" />
+                            <TableColumn fx:id="booksTcTitle" prefWidth="100.0" text="title" />
+                              <TableColumn fx:id="booksTcAuthor" prefWidth="119.0" text="author" />
+                              <TableColumn fx:id="booksTcPrice" prefWidth="45.0" text="price" />
+                              <TableColumn fx:id="booksTcPublisher" prefWidth="122.0" text="publisher" />
+                              <TableColumn fx:id="booksTcGenre" prefWidth="91.0" text="genre" />
+                              <TableColumn fx:id="booksTcPublicationDate" prefWidth="101.0" text="publication date" />
+                              <TableColumn fx:id="booksTcLanguage" minWidth="0.0" prefWidth="94.0" text="language" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="ClearBookButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/styles.css" text="Clear Books" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="ERASER" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="SearchBookButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/styles.css" text="Search Book" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="DeleteBookButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/styles.css" text="Delete Book" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="UpdateBookButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/styles.css" text="Update Book" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="20px" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="AddBookButton" graphicTextGap="7.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="23.0" prefWidth="261.0" stylesheets="@../CSS/styles.css" text="Add Book" textFill="WHITE">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="20px" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

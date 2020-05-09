@@ -1,0 +1,58 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 30, 2020, 11:39:41 PM
+    Author     : AboOod_shbika99
+*/
+
+.button{
+    -fx-background-color: #3F2B63; 
+}
+.button:hover{
+    -fx-background-color: #2A1C42 
+}
+.button:pressed{
+    -fx-background-color: #7156DD
+}
+
+.table-view .column-header,
+.table-view .column-header-background .filler{
+    -fx-cell-size:20;
+    -fx-background-color: #7858ad; 
+}
+
+.table-view .column-header .label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.table-view .cell{
+    -fx-cell-size:30;
+    -fx-alignment: CENTER;
+    -fx-text-fill: #000000;
+}
+
+.table-row-cell:selected{
+    -fx-background-color: rgb(206, 127, 243);
+}
+
+.table-row-cell:selected.text{
+    -fx-fill: white;
+}
+
+.table-view .increment-button, .table-view .decrement-button{
+    -fx-background-color: transparent;
+    -fx-background-radius: 2em;
+}
+
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color:derive(#2D75E8, 80%);
+    -fx-background-radius: 2em;
+    -fx-border-radius: 2em;
+}

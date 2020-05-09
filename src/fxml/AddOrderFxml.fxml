@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="371.0" prefWidth="392.0" style="-fx-background-color: #1f4a2f;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddOrderFxmlController">
+   <children>
+      <FontAwesomeIcon fill="WHITE" glyphName="PLUS" layoutX="178.0" layoutY="53.0" size="45" />
+      <GridPane layoutX="14.0" layoutY="102.0" prefHeight="181.0" prefWidth="353.0">
+         <children>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Return Date:" textFill="WHITE" GridPane.rowIndex="3">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="AddOrderFxml_RDDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <DatePicker fx:id="AddOrderFxml_BDDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Borrowing Date:" textFill="WHITE" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Borrower ID:" textFill="WHITE" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Book ID:" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="AddOrderFxml_BookIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="AddOrderFxml_BorrowerIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Label alignment="CENTER" layoutX="94.0" layoutY="59.0" prefHeight="39.0" prefWidth="215.0" text="Add an Order" textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="AddOrderFxml_ButtonAdd" layoutX="94.0" layoutY="310.0" mnemonicParsing="false" onAction="#handleAddOrderClicks" prefHeight="37.0" prefWidth="84.0" stylesheets="@../CSS/styles2.css" text="Add" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="AddOrderFxml_ButtonCancel" layoutX="213.0" layoutY="310.0" mnemonicParsing="false" onAction="#handleAddOrderClicks" prefHeight="37.0" prefWidth="84.0" stylesheets="@../CSS/styles2.css" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

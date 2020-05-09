@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="291.0" prefWidth="361.0" style="-fx-background-color: #3F2B63;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UpdateBookFxmlController">
+   <children>
+      <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" layoutX="160.0" layoutY="86.0" size="45" />
+      <Label alignment="CENTER" layoutX="11.0" layoutY="103.0" prefHeight="54.0" prefWidth="339.0" text="Enter the ID of the Book you want to update:" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="UpdateBookFxml_textField" layoutX="106.0" layoutY="167.0" />
+      <Button fx:id="UpdateBookFxml_ButtonLookFor" layoutX="73.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleUpdateBookClicks" stylesheets="@../CSS/styles2.css" text="Look for" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="UpdateBookFxml_ButtonCancel" layoutX="199.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleUpdateBookClicks" prefHeight="38.0" prefWidth="87.0" stylesheets="@../CSS/styles2.css" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

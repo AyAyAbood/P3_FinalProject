@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="421.0" prefWidth="433.0" style="-fx-background-color: #1f4a2f;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UpdateOrderFxmlController">
+   <children>
+      <GridPane layoutX="18.0" layoutY="102.0" prefHeight="228.0" prefWidth="387.0">
+         <children>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Return Date:" textFill="WHITE" GridPane.rowIndex="4">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="UpdateOrderFxml_RDDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <DatePicker fx:id="UpdateOrderFxml_BDDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Borrowing Date:" textFill="WHITE" GridPane.rowIndex="3">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Borrower ID:" textFill="WHITE" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="160.0" text="Book ID:" textFill="WHITE" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="UpdateOrderFxml_BookIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="UpdateOrderFxml_BorrowerIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="UpdateOrderFxml_OrderIDComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
+            <Label alignment="BASELINE_RIGHT" prefHeight="30.0" prefWidth="194.0" text="Choose an Order ID to Update:" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Label alignment="CENTER" layoutX="117.0" layoutY="59.0" prefHeight="39.0" prefWidth="215.0" text="Update an Order" textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="UpdateOrderFxml_ButtonAdd" layoutX="115.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleUpdateOrderClicks" prefHeight="37.0" prefWidth="84.0" stylesheets="@../CSS/styles2.css" text="Update" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="UpdateOrderFxml_ButtonCancel" layoutX="234.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleUpdateOrderClicks" prefHeight="37.0" prefWidth="84.0" stylesheets="@../CSS/styles2.css" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" layoutX="200.0" layoutY="53.0" size="45" />
+   </children>
+</AnchorPane>

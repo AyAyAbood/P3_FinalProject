@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="291.0" prefWidth="389.0" style="-fx-background-color: #5c223b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SearchBorrowerFxmlController">
+   <children>
+      <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" layoutX="167.0" layoutY="74.0" size="45" />
+      <Label alignment="CENTER" layoutX="11.0" layoutY="101.0" prefHeight="45.0" prefWidth="372.0" text="Enter the ID of the Borrower you're looking for: " textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="SearchBorrowerFxml_textField" layoutX="120.0" layoutY="157.0" />
+      <Button fx:id="SearchBorrowerFxml_ButtonSearch" layoutX="101.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleSearchBorrowerClicks" stylesheets="@../CSS/styles2.css" text="Search" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="SearchBorrowerFxml_ButtonCancel" layoutX="209.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleSearchBorrowerClicks" stylesheets="@../CSS/styles2.css" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

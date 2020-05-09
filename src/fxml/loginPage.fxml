@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="417.0" prefWidth="626.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginPageController">
+   <children>
+      <ImageView fitHeight="417.0" fitWidth="626.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@sssss.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="160.0" layoutY="213.0" prefHeight="27.0" prefWidth="89.0" text=" Password:" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="232.0" layoutY="129.0" prefHeight="30.0" prefWidth="167.0" text="         Login Page" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="160.0" layoutY="166.0" prefHeight="27.0" prefWidth="89.0" text=" username:" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameTextField" layoutX="270.0" layoutY="167.0" />
+      <TextField fx:id="passwordTextField" layoutX="270.0" layoutY="214.0" />
+      <Button fx:id="LoginButton" layoutX="243.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleClicks" stylesheets="@../CSS/styles2.css" text="Login" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="exit" layoutX="324.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="30.0" prefWidth="55.0" stylesheets="@../CSS/styles2.css" text="Exit" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="73.0" layoutY="46.0" prefHeight="58.0" prefWidth="524.0" text="Library Managment System" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+         <font>
+            <Font name="Marlett" size="40.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

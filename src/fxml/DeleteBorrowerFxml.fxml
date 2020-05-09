@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="284.0" prefWidth="400.0" style="-fx-background-color: #5c223b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DeleteBorrowerFxmlController">
+   <children>
+      <FontAwesomeIcon fill="WHITE" glyphName="TRASH" layoutX="180.0" layoutY="77.0" size="45" />
+      <Label alignment="CENTER" layoutX="5.0" layoutY="97.0" prefHeight="38.0" prefWidth="386.0" text="Enter the ID of the Borrower you want to delete: " textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="DeleteBorrowerFxml_textField" layoutX="123.0" layoutY="151.0" />
+      <Button fx:id="SearchBorrowerFxml_ButtonDelete" layoutX="94.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleDeleteBorrowerClicks" prefHeight="38.0" prefWidth="86.0" stylesheets="@../CSS/styles2.css" text="Delete" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="DeleteBorrowerFxml_ButtonCancel" layoutX="207.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleDeleteBorrowerClicks" prefHeight="38.0" prefWidth="86.0" stylesheets="@../CSS/styles2.css" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
