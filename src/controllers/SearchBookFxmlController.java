@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +29,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -46,6 +48,8 @@ public class SearchBookFxmlController implements Initializable {
     private Button SearchBookFxml_ButtonCancel;
     Alert a = new Alert(Alert.AlertType.NONE);
     Statement BookStatement1;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     /**
      * Initializes the controller class.
@@ -91,12 +95,28 @@ public class SearchBookFxmlController implements Initializable {
                         paneNum = 3;
                         Stage stage = (Stage) SearchBookFxml_ButtonCancel.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                xOffset = event.getSceneX();
+                                yOffset = event.getSceneY();
+                            }
+                        });
+                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                stage.setX(event.getScreenX() - xOffset);
+                                stage.setY(event.getScreenY() - yOffset);
+                            }
+                        });
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
                         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
                         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
                         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                        xOffset = 0;
+                        yOffset = 0;
                     } else {
                         a.setAlertType(AlertType.ERROR);
                         a.setHeaderText("The Book does not exist!");
@@ -112,12 +132,28 @@ public class SearchBookFxmlController implements Initializable {
             paneNum = 3;
             Stage stage = (Stage) SearchBookFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            xOffset = 0;
+            yOffset = 0;
         }
     }
 

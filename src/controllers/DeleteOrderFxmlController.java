@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -45,6 +47,8 @@ public class DeleteOrderFxmlController implements Initializable {
     private Button DeleteOrderFxml_ButtonCancel;
     Alert a = new Alert(Alert.AlertType.NONE);
     Statement OrderStatement2;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     /**
      * Initializes the controller class.
@@ -80,12 +84,28 @@ public class DeleteOrderFxmlController implements Initializable {
                         paneNum = 1;
                         Stage stage = (Stage) DeleteOrderFxml_ButtonCancel.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                xOffset = event.getSceneX();
+                                yOffset = event.getSceneY();
+                            }
+                        });
+                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                stage.setX(event.getScreenX() - xOffset);
+                                stage.setY(event.getScreenY() - yOffset);
+                            }
+                        });
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
                         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
                         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
                         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                        xOffset = 0;
+                        yOffset = 0;
                     } else {
                         a.setAlertType(Alert.AlertType.ERROR);
                         a.setHeaderText("The Order does not exist!");
@@ -102,12 +122,28 @@ public class DeleteOrderFxmlController implements Initializable {
             paneNum = 1;
             Stage stage = (Stage) DeleteOrderFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            xOffset = 0;
+            yOffset = 0;
         }
     }
 

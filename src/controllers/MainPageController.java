@@ -452,8 +452,4 @@ public class MainPageController implements Initializable {
         }
         rs.close();
     }
-    
-    public void goToMain(){
-        
-    }
 }

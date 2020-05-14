@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -42,7 +44,7 @@ import javafx.stage.Stage;
  * @author AboOod_shbika99
  */
 public class AddOrderFxmlController implements Initializable {
-    
+
     @FXML
     private Button AddOrderFxml_ButtonAdd;
     @FXML
@@ -57,6 +59,8 @@ public class AddOrderFxmlController implements Initializable {
     private ComboBox<Integer> AddOrderFxml_BookIDComboBox = new ComboBox();
     @FXML
     private ComboBox<Integer> AddOrderFxml_BorrowerIDComboBox = new ComboBox();
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     /**
      * Initializes the controller class.
@@ -67,7 +71,7 @@ public class AddOrderFxmlController implements Initializable {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/library_management?serverTimeZone=UTC", "root", "");
             this.OrderStatement3 = connection.createStatement();
-            
+
             String sql1 = "select id from books";
             ResultSet rs1 = OrderStatement3.executeQuery(sql1);
             ArrayList<Integer> Books_ids = new ArrayList<>();
@@ -78,10 +82,10 @@ public class AddOrderFxmlController implements Initializable {
             for (int i = 0; i < Books_ids.size(); i++) {
                 AddOrderFxml_BookIDComboBox.getItems().add(Books_ids.get(i));
             }
-            
+
             String sql2 = "select id from borrowers";
             ResultSet rs2 = OrderStatement3.executeQuery(sql2);
-            ArrayList<Integer> Borrowers_ids= new ArrayList<>();
+            ArrayList<Integer> Borrowers_ids = new ArrayList<>();
             while (rs2.next()) {
                 Borrowers_ids.add(rs2.getInt("id"));
             }
@@ -93,7 +97,7 @@ public class AddOrderFxmlController implements Initializable {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     private void handleAddOrderClicks(ActionEvent event) throws IOException, SQLException {
         if (event.getSource() == AddOrderFxml_ButtonAdd) {
@@ -118,12 +122,28 @@ public class AddOrderFxmlController implements Initializable {
                         paneNum = 1;
                         Stage stage = (Stage) AddOrderFxml_ButtonCancel.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                xOffset = event.getSceneX();
+                                yOffset = event.getSceneY();
+                            }
+                        });
+                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                stage.setX(event.getScreenX() - xOffset);
+                                stage.setY(event.getScreenY() - yOffset);
+                            }
+                        });
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
                         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
                         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
                         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                        xOffset = 0;
+                        yOffset = 0;
                     } else {
                         a.setAlertType(Alert.AlertType.ERROR);
                         a.setHeaderText("The Order was not added...");
@@ -140,13 +160,29 @@ public class AddOrderFxmlController implements Initializable {
             paneNum = 1;
             Stage stage = (Stage) AddOrderFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            xOffset = 0;
+            yOffset = 0;
         }
     }
-    
+
 }
