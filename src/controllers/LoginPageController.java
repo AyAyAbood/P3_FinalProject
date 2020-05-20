@@ -20,6 +20,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import entities.user;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.EventHandler;
@@ -82,9 +86,10 @@ public class LoginPageController implements Initializable {
                 String passwordT = passwordTextField.getText();
                 boolean found = false;
                 for (int i = 0; i < users.size(); i++) {
-                    if (users.get(i).getUsername().equals(usernameT) && users.get(i).getPassword().equals(passwordT)) {
+                    if (users.get(i).getUsername().equals(usernameT) && users.get(i).getPassword().equals(md5(passwordT))) {
                         a.setAlertType(Alert.AlertType.INFORMATION);
                         a.setHeaderText("Login Successful!");
+                        MainPageController.log_File("the user has logged in \n");
                         a.showAndWait();
                         Stage stage = (Stage) LoginButton.getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
@@ -124,6 +129,7 @@ public class LoginPageController implements Initializable {
                 a.show();
             }
         } else if (event.getSource() == exit) {
+            MainPageController.log_File("the user exited the program \n");
             System.exit(0);
         }
     }
@@ -143,8 +149,21 @@ public class LoginPageController implements Initializable {
 
     private void ExitButtonHandler(MouseEvent event) {
         if (event.getSource() == ExitButton) {
+            MainPageController.log_File("the user exited the program \n");
             System.exit(0);
         }
+    }
+    
+    private String md5(String pass){
+         MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            md5.update(StandardCharsets.UTF_8.encode(pass));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        assert md5 != null;
+        return String.format("%032x", new BigInteger(1,md5.digest()));
     }
 
 }

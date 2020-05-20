@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -89,57 +91,64 @@ public class AddBookFxmlController implements Initializable {
                 a.show();
             } else {
                 try {
-                    String title = AddBookFxml_TitleTextField.getText();
-                    String author = AddBookFxml_AuthorTextField.getText();
-                    Double price = Double.valueOf(AddBookFxml_PriceTextField.getText());
-                    String publisher = AddBookFxml_PublisherTextField.getText();
-                    String genre = AddBookFxml_GenreTextField.getText();
-                    java.sql.Date publication_Date = java.sql.Date.valueOf(AddBookFxml_PDTextField.getValue());
-                    String language = AddBookFxml_LanguageTextField.getText();
-                    String sql = "insert into books values (" + null + ",'" + title + "','" + author + "'," + price + ",'" + publisher + "','" + genre + "','" + publication_Date + "','" + language + "');";
-                    int BookAdded = BookStatement3.executeUpdate(sql);
-                    if (BookAdded > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Book has been Added Successfully!");
-                        a.showAndWait();
-                        paneNum = 3;
-                        Stage stage = (Stage) AddBookFxml_ButtonCancel.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Book was not added...");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String title = AddBookFxml_TitleTextField.getText();
+                        String author = AddBookFxml_AuthorTextField.getText();
+                        Double price = Double.valueOf(AddBookFxml_PriceTextField.getText());
+                        String publisher = AddBookFxml_PublisherTextField.getText();
+                        String genre = AddBookFxml_GenreTextField.getText();
+                        java.sql.Date publication_Date = java.sql.Date.valueOf(AddBookFxml_PDTextField.getValue());
+                        String language = AddBookFxml_LanguageTextField.getText();
+                        String sql = "insert into books values (" + null + ",'" + title + "','" + author + "'," + price + ",'" + publisher + "','" + genre + "','" + publication_Date + "','" + language + "');";
+                        int BookAdded = BookStatement3.executeUpdate(sql);
+                        if (BookAdded > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Book has been Added Successfully!");
+                            MainPageController.log_File("a new book has been added successfully, the book details:\n " + "title: " + title + ", author: " + author + ", price: " + price + ", publisher: " + publisher + ", genre: " + genre + ", publication Date: " + publication_Date + ", language: " + language + "\n");
+                            a.showAndWait();
+                            paneNum = 3;
+                            Stage stage = (Stage) AddBookFxml_ButtonCancel.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Book was not added...");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     //Logger.getLogger(AddBookFxmlController.class.getName()).log(Level.SEVERE, null, ex);
                     a.setAlertType(Alert.AlertType.ERROR);
-                    a.setHeaderText("something went wrong......");
+                    a.setHeaderText("make sure you filled the inputs correctly");
                     a.show();
                 }
             }
         } else if (event.getSource() == AddBookFxml_ButtonCancel) {
+            MainPageController.log_File("adding a book has been cancelled \n");
             paneNum = 3;
             Stage stage = (Stage) AddBookFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

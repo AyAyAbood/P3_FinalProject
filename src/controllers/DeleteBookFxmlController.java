@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
@@ -74,50 +76,57 @@ public class DeleteBookFxmlController implements Initializable {
                 a.show();
             } else {
                 try {
-                    String sql = "delete from books where id = " + DeleteBookFxml_textField.getText();
-                    int BookDeleted = BookStatement2.executeUpdate(sql);
-                    if (BookDeleted > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Book has been Deleted Successfully!");
-                        a.showAndWait();
-                        paneNum = 3;
-                        Stage stage = (Stage) DeleteBookFxml_ButtonCancel.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Book does not exist!");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String sql = "delete from books where id = " + DeleteBookFxml_textField.getText();
+                        int BookDeleted = BookStatement2.executeUpdate(sql);
+                        if (BookDeleted > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Book has been Deleted Successfully!");
+                            MainPageController.log_File("a book has been deleted successfully, the book id is: " + DeleteBookFxml_textField.getText() + "\n");
+                            a.showAndWait();
+                            paneNum = 3;
+                            Stage stage = (Stage) DeleteBookFxml_ButtonCancel.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Book does not exist!");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     a.setAlertType(Alert.AlertType.ERROR);
-                    a.setHeaderText("You can't delete a book if there's an Order to it! and make sure to insert ONLY integer values.");
-                    a.setContentText("if it's a primary key, Delete the foreign key first!, again, make sure to insert only int values.");
+                    a.setHeaderText("You can't delete a book if there's an Order to it");
+                    a.setContentText("and make sure to insert ONLY integer values");
                     a.show();
                 }
             }
         } else if (event.getSource() == DeleteBookFxml_ButtonCancel) {
+            MainPageController.log_File("deleting a book has been cancelled \n");
             paneNum = 3;
             Stage stage = (Stage) DeleteBookFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

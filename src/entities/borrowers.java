@@ -99,7 +99,7 @@ public class borrowers {
 
     @Override
     public String toString() {
-        return "borrowers{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", age=" + age + ", email=" + email + ", address=" + address + ", gender=" + gender + '}';
+        return "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName;
     }
     
 }

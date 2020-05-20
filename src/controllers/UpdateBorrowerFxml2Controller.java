@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -90,57 +92,64 @@ public class UpdateBorrowerFxml2Controller implements Initializable {
                 a.show();
             } else {
                 try {
-                    String FirstName = UpdateBorrowerFxml_FirstNameTextField.getText();
-                    String LastName = UpdateBorrowerFxml_LastNameTextField.getText();
-                    Integer Phone = Integer.valueOf(UpdateBorrowerFxml_PhoneTextField.getText());
-                    Integer Age = Integer.valueOf(UpdateBorrowerFxml_AgeTextField.getText());
-                    String Email = UpdateBorrowerFxml_EmailTextField.getText();
-                    String Address = UpdateBorrowerFxml_AddressTextField.getText();
-                    RadioButton selectedRadioButtonRR = (RadioButton) genderRR.getSelectedToggle();
-                    String toogleGroupValueRR = selectedRadioButtonRR.getText();
-                    String sql = "update borrowers set firstName = '" + FirstName + "',lastName = '" + LastName + "',phone = " + Phone + ",age = " + Age + ",email = '" + Email + "',address = '" + Address + "',Gender = '" + toogleGroupValueRR + "' where id = " + globalUpdateBorrowerId;
-                    int BorrowerUpdated = BorrowerStatement5.executeUpdate(sql);
-                    if (BorrowerUpdated > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Borrower has been Updated Successfully!");
-                        a.showAndWait();
-                        paneNum = 2;
-                        Stage stage = (Stage) UpdateBorrowerFxml_ButtonUpdate2.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Book was not added...");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String FirstName = UpdateBorrowerFxml_FirstNameTextField.getText();
+                        String LastName = UpdateBorrowerFxml_LastNameTextField.getText();
+                        Integer Phone = Integer.valueOf(UpdateBorrowerFxml_PhoneTextField.getText());
+                        Integer Age = Integer.valueOf(UpdateBorrowerFxml_AgeTextField.getText());
+                        String Email = UpdateBorrowerFxml_EmailTextField.getText();
+                        String Address = UpdateBorrowerFxml_AddressTextField.getText();
+                        RadioButton selectedRadioButtonRR = (RadioButton) genderRR.getSelectedToggle();
+                        String toogleGroupValueRR = selectedRadioButtonRR.getText();
+                        String sql = "update borrowers set firstName = '" + FirstName + "',lastName = '" + LastName + "',phone = " + Phone + ",age = " + Age + ",email = '" + Email + "',address = '" + Address + "',Gender = '" + toogleGroupValueRR + "' where id = " + globalUpdateBorrowerId;
+                        int BorrowerUpdated = BorrowerStatement5.executeUpdate(sql);
+                        if (BorrowerUpdated > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Borrower has been Updated Successfully!");
+                            MainPageController.log_File("a borrower has been updated successfully, the borrower details:\n " + "First Name: " + FirstName + ", Last Name: " + LastName + ", Phone: " + Phone + ", Age: " + Age + ", Email: " + Email + ", Address: " + Address + ", gender: " + toogleGroupValueRR + "\n");
+                            a.showAndWait();
+                            paneNum = 2;
+                            Stage stage = (Stage) UpdateBorrowerFxml_ButtonUpdate2.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Book was not added...");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     a.setAlertType(Alert.AlertType.ERROR);
-                    a.setHeaderText("something went wrong......");
+                    a.setHeaderText("make sure you filled the inputs correctly");
                     a.show();
                 }
             }
         } else if (event.getSource() == UpdateBorrowerFxml_ButtonCancel2) {
+            MainPageController.log_File("updating a borrower has been cancelled \n");
             paneNum = 2;
             Stage stage = (Stage) UpdateBorrowerFxml_ButtonCancel2.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

@@ -121,6 +121,7 @@ public class UpdateBorrowerFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == UpdateBorrowerFxml_ButtonCancel) {
+            MainPageController.log_File("updating a borrower has been cancelled \n");
             paneNum = 2;
             Stage stage = (Stage) UpdateBorrowerFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

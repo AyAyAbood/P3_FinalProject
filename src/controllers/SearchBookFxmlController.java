@@ -90,6 +90,7 @@ public class SearchBookFxmlController implements Initializable {
                         book bo = new book(id, title, author, price, publisher, genre, publication_Date, language);
                         a.setAlertType(AlertType.INFORMATION);
                         a.setHeaderText("The Book has been found                                                                         ");
+                        MainPageController.log_File("the user searched for this book:\n " + "title: " + title + ", author: " + author + ", price: " + price + ", publisher: " + publisher + ", genre: " + genre + ", publication Date: " + publication_Date + ", language: " + language + "\n");
                         a.setContentText(bo.toString());
                         a.showAndWait();
                         paneNum = 3;
@@ -129,6 +130,7 @@ public class SearchBookFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == SearchBookFxml_ButtonCancel) {
+            MainPageController.log_File("searching for a book has been cancelled \n");
             paneNum = 3;
             Stage stage = (Stage) SearchBookFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

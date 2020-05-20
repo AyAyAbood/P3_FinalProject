@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
@@ -75,41 +77,47 @@ public class DeleteOrderFxmlController implements Initializable {
                 a.show();
             } else {
                 try {
-                    String sql = "delete from orders where order_id = " + DeleteOrderFxml_textField.getText();
-                    int OrderDeleted = OrderStatement2.executeUpdate(sql);
-                    if (OrderDeleted > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Order has been Deleted Successfully!");
-                        a.showAndWait();
-                        paneNum = 1;
-                        Stage stage = (Stage) DeleteOrderFxml_ButtonCancel.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Order does not exist!");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String sql = "delete from orders where order_id = " + DeleteOrderFxml_textField.getText();
+                        int OrderDeleted = OrderStatement2.executeUpdate(sql);
+                        if (OrderDeleted > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Order has been Deleted Successfully!");
+                            MainPageController.log_File("an order has been deleted successfully, the order id is: " + DeleteOrderFxml_textField.getText() + "\n");
+                            a.showAndWait();
+                            paneNum = 1;
+                            Stage stage = (Stage) DeleteOrderFxml_ButtonCancel.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Order does not exist!");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     //Logger.getLogger(DeleteOrderFxmlController.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,6 +127,7 @@ public class DeleteOrderFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == DeleteOrderFxml_ButtonCancel) {
+            MainPageController.log_File("deleting a order has been cancelled \n");
             paneNum = 1;
             Stage stage = (Stage) DeleteOrderFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

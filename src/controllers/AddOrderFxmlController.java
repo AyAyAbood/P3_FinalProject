@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -109,54 +111,61 @@ public class AddOrderFxmlController implements Initializable {
                 a.show();
             } else {
                 try {
-                    java.sql.Date BD = java.sql.Date.valueOf(AddOrderFxml_BDDatePicker.getValue());
-                    java.sql.Date RD = java.sql.Date.valueOf(AddOrderFxml_RDDatePicker.getValue());
-                    Integer BrID = AddOrderFxml_BorrowerIDComboBox.getValue();
-                    Integer BoID = AddOrderFxml_BookIDComboBox.getValue();
-                    String sql = "insert into orders values (" + null + "," + BoID + "," + BrID + ",'" + BD + "','" + RD + "');";
-                    int OrderAdded = OrderStatement3.executeUpdate(sql);
-                    if (OrderAdded > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Order has been Added Successfully!");
-                        a.showAndWait();
-                        paneNum = 1;
-                        Stage stage = (Stage) AddOrderFxml_ButtonCancel.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Order was not added...");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        java.sql.Date BD = java.sql.Date.valueOf(AddOrderFxml_BDDatePicker.getValue());
+                        java.sql.Date RD = java.sql.Date.valueOf(AddOrderFxml_RDDatePicker.getValue());
+                        Integer BrID = AddOrderFxml_BorrowerIDComboBox.getValue();
+                        Integer BoID = AddOrderFxml_BookIDComboBox.getValue();
+                        String sql = "insert into orders values (" + null + "," + BoID + "," + BrID + ",'" + BD + "','" + RD + "');";
+                        int OrderAdded = OrderStatement3.executeUpdate(sql);
+                        if (OrderAdded > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Order has been Added Successfully!");
+                            MainPageController.log_File("a new order has been added successfully, the order details:\n " + "Book ID: " + BoID + ", Borrower ID: " + BrID + ", Borrowing Date: " + BD + ", Return Date: " + RD + "\n");
+                            a.showAndWait();
+                            paneNum = 1;
+                            Stage stage = (Stage) AddOrderFxml_ButtonCancel.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Order was not added...");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     //Logger.getLogger(AddOrderFxmlController.class.getName()).log(Level.SEVERE, null, ex);
                     a.setAlertType(Alert.AlertType.ERROR);
-                    a.setHeaderText("something went wrong......");
+                    a.setHeaderText("make sure you filled the inputs correctly");
                     a.show();
                 }
             }
         } else if (event.getSource() == AddOrderFxml_ButtonCancel) {
+            MainPageController.log_File("adding an order has been cancelled \n");
             paneNum = 1;
             Stage stage = (Stage) AddOrderFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

@@ -71,7 +71,7 @@ public class orders {
 
     @Override
     public String toString() {
-        return "orders{" + "order_id=" + order_id + ", book_id=" + book_id + ", borrower_id=" + borrower_id + ", borrowing_date=" + borrowing_date + ", return_date=" + return_date + '}';
+        return "order id=" + order_id + ", book id=" + book_id + ", borrower id=" + borrower_id;
     }
     
 }

@@ -92,6 +92,7 @@ public class SearchOrderFxmlController implements Initializable {
                         orders or = new orders(Order_id, Book_id, Borrower_id, Borrowing_date, Return_date);
                         a.setAlertType(AlertType.INFORMATION);
                         a.setHeaderText("The Order has been found                                                                         ");
+                        MainPageController.log_File("the user searched for this order: \n " + "Book ID: " + Book_id + ", Borrower ID: " + Borrower_id + ", Borrowing Date: " + Borrowing_date + ", Return Date: " + Return_date + "\n");
                         a.setContentText(or.toString());
                         a.showAndWait();
                         paneNum = 1;
@@ -132,6 +133,7 @@ public class SearchOrderFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == SearchOrderFxml_ButtonCancel) {
+            MainPageController.log_File("searching for an order has been cancelled \n");
             paneNum = 1;
             Stage stage = (Stage) SearchOrderFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package controllers;
+
 import static controllers.MainPageController.paneNum;
 import static controllers.UpdateBookFxmlController.globalUpdateBookId;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -86,74 +89,81 @@ public class UpdateBookFxml2Controller implements Initializable {
                 a.show();
             } else {
                 try {
-                    String title = UpdateBookFxml_TitleTextField.getText();
-                    String author = UpdateBookFxml_AuthorTextField.getText();
-                    Double price = Double.valueOf(UpdateBookFxml_PriceTextField.getText());
-                    String publisher = UpdateBookFxml_PublisherTextField.getText();
-                    String genre = UpdateBookFxml_GenreTextField.getText();
-                    java.sql.Date publication_Date = java.sql.Date.valueOf(UpdateBookFxml_PDTextField.getValue());
-                    String language = UpdateBookFxml_LanguageTextField.getText();
-                    String sql = "update books set title = '" + title + "',author = '" + author + "',price = " + price + ",publisher = '" + publisher + "',genre = '" + genre + "',publication_date = '" + publication_Date + "',language = '" + language + "' where id = " + globalUpdateBookId;
-                    int BookUpdated = BookStatement5.executeUpdate(sql);
-                    if (BookUpdated > 0) {
-                        a.setAlertType(Alert.AlertType.INFORMATION);
-                        a.setHeaderText("The Book has been Updated Successfully!");
-                        a.showAndWait();
-                        paneNum = 3;
-                        Stage stage = (Stage) UpdateBookFxml_ButtonCancel2.getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-                        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-                        xOffset = 0;
-                        yOffset = 0;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setHeaderText("The Book was not added...");
-                        a.show();
+                    a.setAlertType(Alert.AlertType.CONFIRMATION);
+                    a.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String title = UpdateBookFxml_TitleTextField.getText();
+                        String author = UpdateBookFxml_AuthorTextField.getText();
+                        Double price = Double.valueOf(UpdateBookFxml_PriceTextField.getText());
+                        String publisher = UpdateBookFxml_PublisherTextField.getText();
+                        String genre = UpdateBookFxml_GenreTextField.getText();
+                        java.sql.Date publication_Date = java.sql.Date.valueOf(UpdateBookFxml_PDTextField.getValue());
+                        String language = UpdateBookFxml_LanguageTextField.getText();
+                        String sql = "update books set title = '" + title + "',author = '" + author + "',price = " + price + ",publisher = '" + publisher + "',genre = '" + genre + "',publication_date = '" + publication_Date + "',language = '" + language + "' where id = " + globalUpdateBookId;
+                        int BookUpdated = BookStatement5.executeUpdate(sql);
+                        if (BookUpdated > 0) {
+                            a.setAlertType(Alert.AlertType.INFORMATION);
+                            a.setHeaderText("The Book has been Updated Successfully!");
+                            MainPageController.log_File("a book has been updated successfully, the book details:\n " + "title: " + title + ", author: " + author + ", price: " + price + ", publisher: " + publisher + ", genre: " + genre + ", publication Date: " + publication_Date + ", language: " + language + "\n");
+                            a.showAndWait();
+                            paneNum = 3;
+                            Stage stage = (Stage) UpdateBookFxml_ButtonCancel2.getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    xOffset = event.getSceneX();
+                                    yOffset = event.getSceneY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - xOffset);
+                                    stage.setY(event.getScreenY() - yOffset);
+                                }
+                            });
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+                            xOffset = 0;
+                            yOffset = 0;
+                        } else {
+                            a.setAlertType(Alert.AlertType.ERROR);
+                            a.setHeaderText("The Book was not added...");
+                            a.show();
+                        }
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(AddBookFxmlController.class.getName()).log(Level.SEVERE, null, ex);
                     a.setAlertType(Alert.AlertType.ERROR);
-                    a.setHeaderText("something went wrong......");
+                    a.setHeaderText("make sure you filled the inputs correctly");
                     a.show();
                 }
             }
         } else if (event.getSource() == UpdateBookFxml_ButtonCancel2) {
+            MainPageController.log_File("updating a book has been cancelled \n");
             paneNum = 3;
             Stage stage = (Stage) UpdateBookFxml_ButtonCancel2.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                xOffset = event.getSceneX();
-                                yOffset = event.getSceneY();
-                            }
-                        });
-                        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                stage.setX(event.getScreenX() - xOffset);
-                                stage.setY(event.getScreenY() - yOffset);
-                            }
-                        });
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

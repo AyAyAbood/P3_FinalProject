@@ -89,6 +89,7 @@ public class SearchBorrowerFxmlController implements Initializable {
                         borrowers br = new borrowers(id, firstName, lastName, phone, age, email, address, gender);
                         a.setAlertType(AlertType.INFORMATION);
                         a.setHeaderText("The Borrower has been found                                                                                  ");
+                        MainPageController.log_File("the user searched for this borrower:\n " + "First Name: " + firstName + ", Last Name: " + lastName + ", Phone: " + phone + ", Age: " + age + ", Email: " + email + ", Address: " + address + ", gender: " + gender + "\n");
                         a.setContentText(br.toString());
                         a.showAndWait();
                         paneNum = 2;
@@ -128,6 +129,7 @@ public class SearchBorrowerFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == SearchBorrowerFxml_ButtonCancel) {
+            MainPageController.log_File("searching for a borrower has been cancelled \n");
             paneNum = 2;
             Stage stage = (Stage) SearchBorrowerFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

@@ -120,6 +120,7 @@ public class UpdateBookFxmlController implements Initializable {
                 }
             }
         } else if (event.getSource() == UpdateBookFxml_ButtonCancel) {
+            MainPageController.log_File("updating a book has been cancelled \n");
             paneNum = 3;
             Stage stage = (Stage) UpdateBookFxml_ButtonCancel.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));

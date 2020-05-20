@@ -6,10 +6,15 @@
 package controllers;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import java.time.LocalDate;
 import entities.book;
 import entities.borrowers;
 import entities.orders;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,11 +22,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +42,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -217,6 +229,7 @@ public class MainPageController implements Initializable {
         ab.setHeaderText("");
         ab.setContentText("");
         if (event.getSource() == closeButton) {
+            log_File("the user closed the program \n");
             System.exit(0);
         } else if (event.getSource() == booksButton) {
             BooksPane.toFront();
@@ -234,14 +247,36 @@ public class MainPageController implements Initializable {
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         } else if (event.getSource() == DeleteBookButton) {
-            Stage stage = (Stage) DeleteBookButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteBookFxml.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            book boo = booksTableView.getSelectionModel().getSelectedItem();
+            if (boo != null) {
+                try {
+                    ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                    ab.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = ab.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String sql = "delete from books where id=" + boo.getId();
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Book has been Deleted Successfully!");
+                        ab.showAndWait();
+                        this.statement.executeUpdate(sql);
+                        booksTableView.getItems().clear();
+                        showBooks();
+                    }
+                } catch (SQLException ex) {
+                    ab.setAlertType(Alert.AlertType.ERROR);
+                    ab.setHeaderText("Book can't be deleted due to it having a primary key-foreign key relationship with some orders. ");
+                    ab.show();
+                }
+            } else {
+                Stage stage = (Stage) DeleteBookButton.getScene().getWindow();
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteBookFxml.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+                Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            }
         } else if (event.getSource() == UpdateBookButton) {
             Stage stage = (Stage) UpdateBookButton.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/UpdateBookFxml.fxml"));
@@ -270,14 +305,36 @@ public class MainPageController implements Initializable {
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         } else if (event.getSource() == DeleteBorrowerButton) {
-            Stage stage = (Stage) DeleteBorrowerButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteBorrowerFxml.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            borrowers bro = borrowerTableView.getSelectionModel().getSelectedItem();
+            if (bro != null) {
+                try {
+                    ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                    ab.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = ab.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String sql = "delete from borrowers where id=" + bro.getId();
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Borrowers has been Deleted Successfully!");
+                        ab.showAndWait();
+                        this.statement.executeUpdate(sql);
+                        borrowerTableView.getItems().clear();
+                        showBorrowers();
+                    }
+                } catch (SQLException ex) {
+                    ab.setAlertType(Alert.AlertType.ERROR);
+                    ab.setHeaderText("Borrower can't be deleted due to it having a primary key-foreign key relationship with some orders. ");
+                    ab.show();
+                }
+            } else {
+                Stage stage = (Stage) DeleteBorrowerButton.getScene().getWindow();
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteBorrowerFxml.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+                Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            }
         } else if (event.getSource() == UpdateBorrowerButton) {
             Stage stage = (Stage) UpdateBorrowerButton.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/UpdateBorrowerFxml.fxml"));
@@ -324,28 +381,56 @@ public class MainPageController implements Initializable {
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         } else if (event.getSource() == DeleteOrderButton) {
-            Stage stage = (Stage) DeleteOrderButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteOrderFxml.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            orders or = ordersTableView.getSelectionModel().getSelectedItem();
+            if (or != null) {
+                try {
+                    ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                    ab.setHeaderText("are you sure?");
+                    Optional<ButtonType> result = ab.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String sql = "delete from orders where order_id=" + or.getOrder_id();
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Order has been Deleted Successfully!");
+                        ab.showAndWait();
+                        this.statement.executeUpdate(sql);
+                        ordersTableView.getItems().clear();
+                        showOrders();
+                    }
+                } catch (SQLException ex) {
+                    ab.setAlertType(Alert.AlertType.ERROR);
+                    ab.setHeaderText("something went wrong.......");
+                    ab.show();
+                }
+            } else {
+                Stage stage = (Stage) DeleteOrderButton.getScene().getWindow();
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteOrderFxml.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+                Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+                stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+                stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+            }
         } else if (event.getSource() == ClearBookButton) {
             String sql = "delete from books";
             try {
-               int rows = this.statement.executeUpdate(sql);
-                if (rows > 0) {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Books have been cleared");
-                    ab.show();
-                } else {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Books are Empty!");
-                    ab.show();
+                ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                ab.setHeaderText("are you sure?");
+                Optional<ButtonType> result = ab.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    int rows = this.statement.executeUpdate(sql);
+                    if (rows > 0) {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Books have been cleared");
+                        log_File("Books have been cleared \n");
+                        ab.show();
+                    } else {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Books are Empty!");
+                        ab.show();
+                    }
+                    showBooks();
                 }
-                showBooks();
             } catch (Exception e) {
                 ab.setAlertType(Alert.AlertType.ERROR);
                 ab.setHeaderText("books can't be cleared due to some books having primary key-foreign key relationship with some orders. ");
@@ -354,17 +439,23 @@ public class MainPageController implements Initializable {
         } else if (event.getSource() == ClearBorrowerButton) {
             String sql = "delete from borrowers";
             try {
-                int rows = this.statement.executeUpdate(sql);
-                if (rows > 0) {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Borrowers have been cleared");
-                    ab.show();
-                } else {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Borrowers are Empty!");
-                    ab.show();
+                ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                ab.setHeaderText("are you sure?");
+                Optional<ButtonType> result = ab.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    int rows = this.statement.executeUpdate(sql);
+                    if (rows > 0) {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Borrowers have been cleared");
+                        log_File("Borrowers have been cleared \n");
+                        ab.show();
+                    } else {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Borrowers are Empty!");
+                        ab.show();
+                    }
+                    showBorrowers();
                 }
-                showBorrowers();
             } catch (Exception e) {
                 ab.setAlertType(Alert.AlertType.ERROR);
                 ab.setHeaderText("Borrowers can't be cleared due to some borrowers having primary key-foreign key relationship with some orders. ");
@@ -373,17 +464,23 @@ public class MainPageController implements Initializable {
         } else if (event.getSource() == ClearOrderButton) {
             String sql = "delete from orders";
             try {
-                int rows = this.statement.executeUpdate(sql);
-                if (rows > 0) {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Orders have been cleared");
-                    ab.show();
-                } else {
-                    ab.setAlertType(Alert.AlertType.INFORMATION);
-                    ab.setHeaderText("The Orders are Empty!");
-                    ab.show();
+                ab.setAlertType(Alert.AlertType.CONFIRMATION);
+                ab.setHeaderText("are you sure?");
+                Optional<ButtonType> result = ab.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    int rows = this.statement.executeUpdate(sql);
+                    if (rows > 0) {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Orders have been cleared");
+                        log_File("Orders have been cleared \n");
+                        ab.show();
+                    } else {
+                        ab.setAlertType(Alert.AlertType.INFORMATION);
+                        ab.setHeaderText("The Orders are Empty!");
+                        ab.show();
+                    }
+                    showOrders();
                 }
-                showOrders();
             } catch (Exception e) {
                 ab.setAlertType(Alert.AlertType.ERROR);
                 ab.setHeaderText("something went wrong.......");
@@ -395,6 +492,7 @@ public class MainPageController implements Initializable {
     @FXML
     private void ExitButtonHandler(MouseEvent event) {
         if (event.getSource() == ExitButton || event.getSource() == ExitButton1 || event.getSource() == ExitButton2) {
+            log_File("the user closed the program \n");
             System.exit(0);
         }
     }
@@ -440,6 +538,8 @@ public class MainPageController implements Initializable {
     private void showOrders() throws SQLException {
         ResultSet rs = this.statement.executeQuery("Select * From orders");
         ordersTableView.getItems().clear();
+        listOrders.clear();
+        List<orders> OrderedOrderList = null;
         while (rs.next()) {
             orders or = new orders();
             or.setOrder_id(rs.getInt("order_id"));
@@ -448,8 +548,26 @@ public class MainPageController implements Initializable {
             or.setBorrowing_date(rs.getDate("borrowing_date"));
             or.setReturn_date(rs.getDate("return_date"));
             listOrders.add(or);
-            ordersTableView.getItems().add(or);
+            //ordersTableView.getItems().add(or);
         }
+        OrderedOrderList = listOrders.stream().sorted(Comparator.comparing(orders::getBook_id)).collect(Collectors.toList());
+        ordersTableView.getItems().addAll(OrderedOrderList);
         rs.close();
     }
+
+    public static void log_File(String query) {
+        File file = new File("logFile.txt");
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(file, true);
+            PrintWriter pw = new PrintWriter(fos);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+            java.util.Date date = new java.util.Date(System.currentTimeMillis() + 10800000);
+            pw.println(formatter.format(date) + " --> " + query);
+            pw.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
