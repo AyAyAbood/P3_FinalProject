@@ -255,10 +255,10 @@ public class MainPageController implements Initializable {
                     Optional<ButtonType> result = ab.showAndWait();
                     if (result.get() == ButtonType.OK) {
                         String sql = "delete from books where id=" + boo.getId();
+                        this.statement.executeUpdate(sql);
                         ab.setAlertType(Alert.AlertType.INFORMATION);
                         ab.setHeaderText("The Book has been Deleted Successfully!");
                         ab.showAndWait();
-                        this.statement.executeUpdate(sql);
                         booksTableView.getItems().clear();
                         showBooks();
                     }
@@ -313,10 +313,10 @@ public class MainPageController implements Initializable {
                     Optional<ButtonType> result = ab.showAndWait();
                     if (result.get() == ButtonType.OK) {
                         String sql = "delete from borrowers where id=" + bro.getId();
+                        this.statement.executeUpdate(sql);
                         ab.setAlertType(Alert.AlertType.INFORMATION);
                         ab.setHeaderText("The Borrowers has been Deleted Successfully!");
                         ab.showAndWait();
-                        this.statement.executeUpdate(sql);
                         borrowerTableView.getItems().clear();
                         showBorrowers();
                     }
